@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Broiler Chickens | Business Name</title>
+    <style>
+        /* --- Global Reset & Fonts --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        /* --- Theme Variables (Light Mode Defaults) --- */
+        :root {
+            --bg-color: #fcfcfc;
+            --section-alt-bg: #f7f7f7;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --text-title: #222222;
+            --header-bg: #ffffff;
+            --border-color: #eeeeee;
+            --input-border: #cccccc;
+            --accent-color: #e65c00;
+            --accent-hover: #cc5200;
+        }
+
+        /* --- Dark Mode Variables --- */
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --section-alt-bg: #1a1a1a;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --text-muted: #aaaaaa;
+            --text-title: #ffffff;
+            --header-bg: #1f1f1f;
+            --border-color: #2d2d2d;
+            --input-border: #444444;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* --- Navigation --- */
+        header {
+            background-color: var(--header-bg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- Theme Toggle Button --- */
+        .theme-toggle-btn {
+            background: none;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .theme-toggle-btn:hover {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            /* Updated image to direct broiler chickens on a farm background */
+            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)), url('Chickens.jpg') no-repeat center center/cover;
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            padding: 0 20px;
+            margin-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 25px;
+            max-width: 600px;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* --- Main Content Layout --- */
+        section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+            position: relative;
+            color: var(--text-title);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+            margin: 10px auto 0;
+        }
+
+        /* --- About / Features Section --- */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+
+        /* --- Products Section --- */
+        .products-container-wrapper {
+            background-color: var(--section-alt-bg); 
+            max-width: 100%;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-info h3 {
+            margin-bottom: 10px;
+            font-size: 22px;
+            color: var(--text-title);
+        }
+
+        .product-info p {
+            color: var(--text-muted);
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        /* --- Contact Section --- */
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-info h3 {
+            margin-bottom: 20px;
+            color: var(--text-title);
+        }
+
+        .contact-info p {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--input-border);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #111111;
+            color: #bbb;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-right {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">Lungani's Broiler Chickens</a>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">Why Choose Us</a></li>
+                    <li><a href="#products">Our Chickens</a></li>
+                    <li><a href="#contact">Order Now</a></li>
+                </ul>
+                <button class="theme-toggle-btn" id="themeToggle">🌙 Dark</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero" id="home">
+        <h1>Fresh, Healthy Broiler Chickens</h1>
+        <p>Locally raised with top-quality feed. Premium weight and unbeatable freshness straight from our farm to your kitchen.</p>
+        <a href="#products" class="btn">View Pricing</a>
+    </div>
+
+    <section id="about">
+        <h2 class="section-title">Why Buy From Us?</h2>
+        <div class="features">
+            <div class="feature-card">
+                <h3>Premium Quality</h3>
+                <p>Our broilers are carefully raised in a clean, spacious environment ensuring healthy, tender meat.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Organic Feed</h3>
+                <p>We use high-grade, nutritious feed with absolutely no harmful chemicals or growth shortcuts.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Affordable Rates</h3>
+                <p>Get the best value for your money. Great discounts available for bulk buyers and catering businesses.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="products-container-wrapper">
+        <section id="products">
+            <h2 class="section-title">Our Stock & Pricing</h2>
+            <div class="products-grid">
+                
+                <div class="product-card">
+                    <div class="product-info">
+                        <h3>Live Broiler Chicken</h3>
+                        <p style="margin-bottom: 10px;">Standard Size (Approx. 1.8kg - 2.2kg)</p>
+                        <div class="price">R 85.00</div>
+                        <a href="#contact" class="btn">Order / Inquire</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-info">
+                        <h3>Jumbo Live Broiler</h3>
+                        <p style="margin-bottom: 10px;">Large Size (Approx. 2.5kg+)</p>
+                        <div class="price">R 105.00</div>
+                        <a href="#contact" class="btn">Order / Inquire</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-info">
+                        <h3>Bulk Combo (x10)</h3>
+                        <p style="margin-bottom: 10px;">10x Standard Broilers (Perfect for events)</p>
+                        <div class="price">R 800.00</div>
+                        <a href="#contact" class="btn">Order / Inquire</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <section id="contact">
+        <h2 class="section-title">Place Your Order</h2>
+        <div class="contact-container">
+            
+            <div class="contact-info">
+                <h3>Get In Touch</h3>
+                <p>Ready to place an order or have questions? Contact us via the details below or drop us a message using the form.</p>
+                <br>
+                <p><strong>📍 Location:</strong> Mtunzini, Malungisa(kwaMkhwanazi) KZN</p>
+                <p><strong>📞 Phone / WhatsApp:</strong> +27 71 019 2992</p>
+                <p><strong>✉️ Email:</strong> orders@yourfarm.co.za</p>
+                <p><strong>⏰ Hours:</strong> Mon - Sat: 08:00 AM - 05:00 PM</p>
+            </div>
+
+            <div>
+                <form class="contact-form" id="orderForm">
+                    <input type="text" id="custName" placeholder="Your Name" required>
+                    <input type="tel" id="custPhone" placeholder="Your Phone Number/WhatsApp" required>
+                    <input type="number" id="custQty" placeholder="Quantity Needed" min="1" required>
+                    <textarea id="custMessage" placeholder="Specify details (e.g., live or slaughtered, delivery date, preferred sizing)..." required></textarea>
+                    <button type="submit" class="btn">Send via WhatsApp</button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Chicken Flock Farms. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // --- Light / Dark Mode Logic ---
+        const themeToggleBtn = document.getElementById('themeToggle');
+        
+        themeToggleBtn.addEventListener('click', function() {
+            // Check current theme state on root element
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                // Switch to Light Mode
+                document.documentElement.removeAttribute('data-theme');
+                themeToggleBtn.innerHTML = "🌙 Dark";
+            } else {
+                // Switch to Dark Mode
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggleBtn.innerHTML = "☀️ Light";
+            }
+        });
+
+        // --- WhatsApp Form Logic ---
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+
+            var whatsappNumber = "27710192992"; 
+
+            var name = document.getElementById('custName').value;
+            var phone = document.getElementById('custPhone').value;
+            var qty = document.getElementById('custQty').value;
+            var message = document.getElementById('custMessage').value;
+
+            var text = "*NEW BROILER CHICKEN ORDER* \n\n" +
+                       "*Name:* " + name + "\n" +
+                       "*Phone:* " + phone + "\n" +
+                       "*Quantity:* " + qty + "\n" +
+                       "*Details:* " + message;
+
+            var encodedText = encodeURIComponent(text);
+            var whatsappURL = "https://api.whatsapp.com/send?phone=" + whatsappNumber + "&text=" + encodedText;
+            window.open(whatsappURL, '_blank');
+        });
+    </script>
+
+</body>
+</html>
