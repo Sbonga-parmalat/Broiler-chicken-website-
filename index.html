@@ -80,11 +80,11 @@
             gap: 25px;
         }
 
-        /* --- Square/Block Menu Configuration --- */
+        /* --- Square/Block Menu Configuration (Horizontal Always) --- */
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 0; /* Makes the blocks sit right against each other */
+            gap: 0; /* Keeps blocks joined flush together */
             border: 1px solid var(--border-color);
             border-radius: 4px;
             overflow: hidden;
@@ -98,10 +98,11 @@
             text-decoration: none;
             color: var(--text-color);
             font-weight: 500;
-            padding: 10px 20px; /* Makes them look like uniform squares */
+            padding: 10px 20px; /* Desktop link padding */
             background-color: var(--section-alt-bg);
             border-right: 1px solid var(--border-color);
             display: inline-block;
+            white-space: nowrap; /* Prevents text links from breaking into 2 lines */
             transition: background-color 0.2s, color 0.2s;
         }
 
@@ -342,34 +343,38 @@
         @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
-                gap: 15px;
+                gap: 10px;
                 text-align: center;
-                padding: 15px 10px;
+                padding: 10px 5px;
             }
             .nav-right {
                 flex-direction: column;
-                gap: 15px;
+                gap: 10px;
                 width: 100%;
             }
+            /* Keeps blocks inline, horizontally scrollable if mobile screen is tiny */
             .nav-links {
-                flex-direction: column; /* Stacks blocks cleanly on top of each other */
-                width: 100%;
+                flex-direction: row; 
+                width: auto;
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
             }
             .nav-links li {
-                width: 100%;
+                width: auto;
             }
             .nav-links a {
-                width: 100%;
-                text-align: center;
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
-                padding: 12px 20px;
-            }
-            .nav-links li:last-child a {
+                width: auto;
+                padding: 8px 10px; /* Slightly tighter text padding to fit perfectly across mobile devices */
+                font-size: 13px;    /* Optimizes text scale for small horizontal rows */
+                border-right: 1px solid var(--border-color);
                 border-bottom: none;
             }
+            .nav-links li:last-child a {
+                border-right: none;
+            }
             .hero {
-                margin-top: 240px; /* Adapts space for the newly expanded block height */
+                margin-top: 130px; /* Shortened to pull the hero image back up nicely */
                 height: 65vh;
             }
             .hero h1 {
