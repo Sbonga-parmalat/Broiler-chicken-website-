@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fresh Broiler Chickens | Business Name</title>
+    <title>Fresh Broiler Chickens | Lungani's Broiler Chickens</title>
     <style>
         /* --- Global Reset & Fonts --- */
         * {
@@ -119,7 +119,6 @@
 
         /* --- Hero Section --- */
         .hero {
-            /* Updated image to direct broiler chickens on a farm background */
             background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)), url('Chickens.jpg') no-repeat center center/cover;
             height: 70vh;
             display: flex;
@@ -307,17 +306,29 @@
             .nav-container {
                 flex-direction: column;
                 gap: 15px;
+                text-align: center;
+                padding: 15px 10px;
             }
             .nav-right {
                 flex-direction: column;
-                gap: 10px;
+                gap: 15px;
                 width: 100%;
             }
             .nav-links {
-                justify-content: center;
+                flex-direction: column;
+                gap: 12px;
+                width: 100%;
+                align-items: center;
+            }
+            .hero {
+                margin-top: 140px; /* Gives space for the expanded mobile header */
+                height: 60vh;
             }
             .hero h1 {
-                font-size: 32px;
+                font-size: 30px;
+            }
+            .hero p {
+                font-size: 16px;
             }
         }
     </style>
@@ -410,67 +421,4 @@
                 <p><strong>📍 Location:</strong> Mtunzini, Malungisa(kwaMkhwanazi) KZN</p>
                 <p><strong>📞 Phone / WhatsApp:</strong> +27 71 019 2992</p>
                 <p><strong>✉️ Email:</strong> orders@yourfarm.co.za</p>
-                <p><strong>⏰ Hours:</strong> Mon - Sat: 08:00 AM - 05:00 PM</p>
-            </div>
-
-            <div>
-                <form class="contact-form" id="orderForm">
-                    <input type="text" id="custName" placeholder="Your Name" required>
-                    <input type="tel" id="custPhone" placeholder="Your Phone Number/WhatsApp" required>
-                    <input type="number" id="custQty" placeholder="Quantity Needed" min="1" required>
-                    <textarea id="custMessage" placeholder="Specify details (e.g., live or slaughtered, delivery date, preferred sizing)..." required></textarea>
-                    <button type="submit" class="btn">Send via WhatsApp</button>
-                </form>
-            </div>
-
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 Chicken Flock Farms. All Rights Reserved.</p>
-    </footer>
-
-    <script>
-        // --- Light / Dark Mode Logic ---
-        const themeToggleBtn = document.getElementById('themeToggle');
-        
-        themeToggleBtn.addEventListener('click', function() {
-            // Check current theme state on root element
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            
-            if (currentTheme === 'dark') {
-                // Switch to Light Mode
-                document.documentElement.removeAttribute('data-theme');
-                themeToggleBtn.innerHTML = "🌙 Dark";
-            } else {
-                // Switch to Dark Mode
-                document.documentElement.setAttribute('data-theme', 'dark');
-                themeToggleBtn.innerHTML = "☀️ Light";
-            }
-        });
-
-        // --- WhatsApp Form Logic ---
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault(); 
-
-            var whatsappNumber = "27710192992"; 
-
-            var name = document.getElementById('custName').value;
-            var phone = document.getElementById('custPhone').value;
-            var qty = document.getElementById('custQty').value;
-            var message = document.getElementById('custMessage').value;
-
-            var text = "*NEW BROILER CHICKEN ORDER* \n\n" +
-                       "*Name:* " + name + "\n" +
-                       "*Phone:* " + phone + "\n" +
-                       "*Quantity:* " + qty + "\n" +
-                       "*Details:* " + message;
-
-            var encodedText = encodeURIComponent(text);
-            var whatsappURL = "https://api.whatsapp.com/send?phone=" + whatsappNumber + "&text=" + encodedText;
-            window.open(whatsappURL, '_blank');
-        });
-    </script>
-
-</body>
-</html>
+                <p><strong>
