@@ -23,7 +23,7 @@
             --text-muted: #666666;
             --text-title: #222222;
             --header-bg: #ffffff;
-            --border-color: #eeeeee;
+            --border-color: #cccccc;
             --input-border: #cccccc;
             --accent-color: #e65c00;
             --accent-hover: #cc5200;
@@ -38,7 +38,7 @@
             --text-muted: #aaaaaa;
             --text-title: #ffffff;
             --header-bg: #1f1f1f;
-            --border-color: #2d2d2d;
+            --border-color: #444444;
             --input-border: #444444;
         }
 
@@ -80,21 +80,58 @@
             gap: 25px;
         }
 
+        /* --- Square/Block Menu Configuration --- */
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 0; /* Makes the blocks sit right against each other */
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .nav-links li {
+            display: flex;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-muted);
+            color: var(--text-color);
             font-weight: 500;
-            transition: color 0.3s;
+            padding: 10px 20px; /* Makes them look like uniform squares */
+            background-color: var(--section-alt-bg);
+            border-right: 1px solid var(--border-color);
+            display: inline-block;
+            transition: background-color 0.2s, color 0.2s;
         }
 
+        /* Removes the extra border line on the last block */
+        .nav-links li:last-child a {
+            border-right: none;
+        }
+
+        /* Hover style for standard blocks */
         .nav-links a:hover {
+            background-color: var(--border-color);
             color: var(--accent-color);
+        }
+
+        /* --- Custom Distinct Block for HOME --- */
+        .nav-links li:first-child a {
+            background-color: #444444; /* Solid dark grey background */
+            color: #ffffff;            /* Crisp white text */
+            font-weight: bold;
+        }
+
+        .nav-links li:first-child a:hover {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        /* Changes Home block in Dark Mode so it remains clearly visible */
+        [data-theme="dark"] .nav-links li:first-child a {
+            background-color: var(--accent-color);
+            color: #ffffff;
         }
 
         /* --- Theme Toggle Button --- */
@@ -301,7 +338,7 @@
             font-size: 14px;
         }
 
-        /* --- Responsive Design --- */
+        /* --- Responsive Design for Mobile --- */
         @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
@@ -315,14 +352,25 @@
                 width: 100%;
             }
             .nav-links {
-                flex-direction: column;
-                gap: 12px;
+                flex-direction: column; /* Stacks blocks cleanly on top of each other */
                 width: 100%;
-                align-items: center;
+            }
+            .nav-links li {
+                width: 100%;
+            }
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 12px 20px;
+            }
+            .nav-links li:last-child a {
+                border-bottom: none;
             }
             .hero {
-                margin-top: 140px; /* Gives space for the expanded mobile header */
-                height: 60vh;
+                margin-top: 240px; /* Adapts space for the newly expanded block height */
+                height: 65vh;
             }
             .hero h1 {
                 font-size: 30px;
@@ -421,4 +469,64 @@
                 <p><strong>📍 Location:</strong> Mtunzini, Malungisa(kwaMkhwanazi) KZN</p>
                 <p><strong>📞 Phone / WhatsApp:</strong> +27 71 019 2992</p>
                 <p><strong>✉️ Email:</strong> orders@yourfarm.co.za</p>
-                <p><strong>
+                <p><strong>⏰ Hours:</strong> Mon - Sat: 08:00 AM - 05:00 PM</p>
+            </div>
+
+            <div>
+                <form class="contact-form" id="orderForm">
+                    <input type="text" id="custName" placeholder="Your Name" required>
+                    <input type="tel" id="custPhone" placeholder="Your Phone Number/WhatsApp" required>
+                    <input type="number" id="custQty" placeholder="Quantity Needed" min="1" required>
+                    <textarea id="custMessage" placeholder="Specify details (e.g., live or slaughtered, delivery date, preferred sizing)..." required></textarea>
+                    <button type="submit" class="btn">Send via WhatsApp</button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Chicken Flock Farms. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // --- Light / Dark Mode Logic ---
+        const themeToggleBtn = document.getElementById('themeToggle');
+        
+        themeToggleBtn.addEventListener('click', function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggleBtn.innerHTML = "🌙 Dark";
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggleBtn.innerHTML = "☀️ Light";
+            }
+        });
+
+        // --- WhatsApp Form Logic ---
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+
+            var whatsappNumber = "27710192992"; 
+
+            var name = document.getElementById('custName').value;
+            var phone = document.getElementById('custPhone').value;
+            var qty = document.getElementById('custQty').value;
+            var message = document.getElementById('custMessage').value;
+
+            var text = "*NEW BROILER CHICKEN ORDER* \n\n" +
+                       "*Name:* " + name + "\n" +
+                       "*Phone:* " + phone + "\n" +
+                       "*Quantity:* " + qty + "\n" +
+                       "*Details:* " + message;
+
+            var encodedText = encodeURIComponent(text);
+            var whatsappURL = "https://api.whatsapp.com/send?phone=" + whatsappNumber + "&text=" + encodedText;
+            window.open(whatsappURL, '_blank');
+        });
+    </script>
+
+</body>
+</html>
