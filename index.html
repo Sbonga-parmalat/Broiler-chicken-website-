@@ -64,6 +64,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* --- Navigation Bar --- */
@@ -131,7 +132,7 @@
             white-space: nowrap;
             font-weight: 500;
             font-size: 14px;
-            /* Precise bezier curves matching your screenshot code blueprints */
+            cursor: pointer;
             transition: width .45s cubic-bezier(.22, 1, .36, 1), background-color .3s ease, box-shadow .3s ease, color .3s;
         }
 
@@ -150,22 +151,22 @@
             transition: opacity .25s ease, max-width .45s ease, transform .35s ease;
         }
 
-        /* --- Expanding Hover & Active Logic --- */
-        /* Home active by default highlights uniquely */
-        .nav-links li:first-child .menu-item {
-            background-color: var(--pill-active-bg);
-            color: var(--pill-active-text);
-            width: 110px; /* Home stays expanded initially to welcome visitors */
+        /* --- Active Style via JavaScript --- */
+        .menu-item.active-pill {
+            background-color: var(--pill-active-bg) !important;
+            color: var(--pill-active-text) !important;
+            width: 110px; 
             gap: 8px;
+            box-shadow: none !important;
         }
-        .nav-links li:first-child .menu-label {
+        .menu-item.active-pill .menu-label {
             opacity: 1;
             max-width: 100px;
             transform: translateX(0);
         }
 
         /* Expanding triggers on hover */
-        .menu-item:hover {
+        .menu-item:hover:not(.active-pill) {
             width: 160px; /* Expands open gracefully to hold text */
             background-color: rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 20px rgba(230, 92, 0, 0.15);
@@ -173,15 +174,8 @@
             color: var(--accent-color);
         }
 
-        /* Make sure home text doesn't clash on hover overlay */
-        .nav-links li:first-child .menu-item:hover {
-            color: var(--pill-active-text);
-            background-color: var(--pill-active-bg);
-            box-shadow: none;
-        }
-
         /* Turn text tags on when parent width scales out */
-        .menu-item:hover .menu-label {
+        .menu-item:hover:not(.active-pill) .menu-label {
             opacity: 1;
             max-width: 100px;
             transform: translateX(0);
@@ -207,10 +201,27 @@
             color: #ffffff;
         }
 
-        /* --- Hero Section --- */
+        /* --- Content Views (Tab Control) --- */
+        .app-view {
+            display: none; /* Hide every section initially */
+            margin-top: 70px; /* Push below header */
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        /* Show active section */
+        .app-view.active-view {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Hero Section Fixes for App Style --- */
         .hero {
             background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)), url('Chickens.jpg') no-repeat center center/cover;
-            height: 70vh;
+            height: calc(100vh - 70px); /* Fill the screen window perfectly */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -218,7 +229,7 @@
             text-align: center;
             color: #fff;
             padding: 0 20px;
-            margin-top: 60px;
+            margin-top: 0;
         }
 
         .hero h1 {
@@ -252,7 +263,7 @@
 
         /* --- Main Content Layout --- */
         section {
-            padding: 60px 20px;
+            padding: 40px 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -296,7 +307,6 @@
 
         /* --- Products Section --- */
         .products-container-wrapper {
-            background-color: var(--section-alt-bg); 
             max-width: 100%;
         }
 
@@ -416,9 +426,11 @@
             .menu-item:active, .menu-item:hover {
                 width: 145px;
             }
-            .hero {
+            .app-view {
                 margin-top: 135px;
-                height: 65vh;
+            }
+            .hero {
+                height: calc(100vh - 135px);
             }
         }
     </style>
@@ -427,32 +439,32 @@
 
     <header>
         <div class="nav-container">
-            <a href="#" class="logo">Lungani's Broiler Chickens</a>
+            <a href="#" class="logo" onclick="switchView('home', this)">Lungani's Broiler Chickens</a>
             <div class="nav-right">
                 <ul class="nav-links">
                     <li>
-                        <a href="#home" class="menu-item">
+                        <div class="menu-item active-pill" onclick="switchView('home', this)">
                             <span class="material-symbols-outlined">home</span>
                             <span class="menu-label">Home</span>
-                        </a>
+                        </div>
                     </li>
                     <li>
-                        <a href="#about" class="menu-item">
+                        <div class="menu-item" onclick="switchView('about', this)">
                             <span class="material-symbols-outlined">star</span>
                             <span class="menu-label">Why Us</span>
-                        </a>
+                        </div>
                     </li>
                     <li>
-                        <a href="#products" class="menu-item">
+                        <div class="menu-item" onclick="switchView('products', this)">
                             <span class="material-symbols-outlined">shopping_basket</span>
                             <span class="menu-label">Our Stock</span>
-                        </a>
+                        </div>
                     </li>
                     <li>
-                        <a href="#contact" class="menu-item">
+                        <div class="menu-item" onclick="switchView('contact', this)">
                             <span class="material-symbols-outlined">chat</span>
                             <span class="menu-label">Order Now</span>
-                        </a>
+                        </div>
                     </li>
                 </ul>
                 <button class="theme-toggle-btn" id="themeToggle">🌙 Dark</button>
@@ -460,97 +472,140 @@
         </div>
     </header>
 
-    <div class="hero" id="home">
-        <h1>Fresh, Healthy Broiler Chickens</h1>
-        <p>Locally raised with top-quality feed. Premium weight and unbeatable freshness straight from our farm to your kitchen.</p>
+    <!-- HOME VIEW -->
+    <div id="view-home" class="app-view active-view">
+        <div class="hero">
+            <h1>Fresh, Healthy Broiler Chickens</h1>
+            <p>Locally raised with top-quality feed. Premium weight and unbeatable freshness straight from our farm to your kitchen.</p>
+        </div>
     </div>
 
-    <section id="about">
-        <h2 class="section-title">Why Buy From Us?</h2>
-        <div class="features">
-            <div class="feature-card">
-                <h3>Premium Quality</h3>
-                <p>Our broilers are carefully raised in a clean, spacious environment ensuring healthy, tender meat.</p>
+    <!-- WHY US VIEW -->
+    <div id="view-about" class="app-view">
+        <section>
+            <h2 class="section-title">Why Buy From Us?</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <h3>Premium Quality</h3>
+                    <p>Our broilers are carefully raised in a clean, spacious environment ensuring healthy, tender meat.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Organic Feed</h3>
+                    <p>We use high-grade, nutritious feed with absolutely no harmful chemicals or growth shortcuts.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Affordable Rates</h3>
+                    <p>Get the best value for your money. Great discounts available for bulk buyers and catering businesses.</p>
+                </div>
             </div>
-            <div class="feature-card">
-                <h3>Organic Feed</h3>
-                <p>We use high-grade, nutritious feed with absolutely no harmful chemicals or growth shortcuts.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Affordable Rates</h3>
-                <p>Get the best value for your money. Great discounts available for bulk buyers and catering businesses.</p>
-            </div>
+        </section>
+    </div>
+
+    <!-- OUR STOCK VIEW -->
+    <div id="view-products" class="app-view">
+        <div class="products-container-wrapper">
+            <section>
+                <h2 class="section-title">Our Stock & Pricing</h2>
+                <div class="products-grid">
+                    
+                    <div class="product-card">
+                        <div class="product-info">
+                            <h3>Live Broiler Chicken</h3>
+                            <p style="margin-bottom: 10px;">Standard Size (Approx. 1.8kg - 2.2kg)</p>
+                            <div class="price">R 85.00</div>
+                            <button class="btn" onclick="goToOrder()">Order / Inquire</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-info">
+                            <h3>Jumbo Live Broiler</h3>
+                            <p style="margin-bottom: 10px;">Large Size (Approx. 2.5kg+)</p>
+                            <div class="price">R 105.00</div>
+                            <button class="btn" onclick="goToOrder()">Order / Inquire</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-info">
+                            <h3>Bulk Combo (x10)</h3>
+                            <p style="margin-bottom: 10px;">10x Standard Broilers (Perfect for events)</p>
+                            <div class="price">R 800.00</div>
+                            <button class="btn" onclick="goToOrder()">Order / Inquire</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
         </div>
-    </section>
+    </div>
 
-    <div class="products-container-wrapper">
-        <section id="products">
-            <h2 class="section-title">Our Stock & Pricing</h2>
-            <div class="products-grid">
+    <!-- ORDER NOW VIEW -->
+    <div id="view-contact" class="app-view">
+        <section>
+            <h2 class="section-title">Place Your Order</h2>
+            <div class="contact-container">
                 
-                <div class="product-card">
-                    <div class="product-info">
-                        <h3>Live Broiler Chicken</h3>
-                        <p style="margin-bottom: 10px;">Standard Size (Approx. 1.8kg - 2.2kg)</p>
-                        <div class="price">R 85.00</div>
-                        <a href="#contact" class="btn">Order / Inquire</a>
-                    </div>
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <p>Ready to place an order or have questions? Contact us via the details below or drop us a message using the form.</p>
+                    <br>
+                    <p><strong>📍 Location:</strong> Mtunzini, Malungisa(kwaMkhwanazi) KZN</p>
+                    <p><strong>📞 Phone / WhatsApp:</strong> +27 71 019 2992</p>
+                    <p><strong>✉️ Email:</strong> orders@yourfarm.co.za</p>
+                    <p><strong>⏰ Hours:</strong> Mon - Sat: 08:00 AM - 05:00 PM</p>
                 </div>
 
-                <div class="product-card">
-                    <div class="product-info">
-                        <h3>Jumbo Live Broiler</h3>
-                        <p style="margin-bottom: 10px;">Large Size (Approx. 2.5kg+)</p>
-                        <div class="price">R 105.00</div>
-                        <a href="#contact" class="btn">Order / Inquire</a>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-info">
-                        <h3>Bulk Combo (x10)</h3>
-                        <p style="margin-bottom: 10px;">10x Standard Broilers (Perfect for events)</p>
-                        <div class="price">R 800.00</div>
-                        <a href="#contact" class="btn">Order / Inquire</a>
-                    </div>
+                <div>
+                    <form class="contact-form" id="orderForm">
+                        <input type="text" id="custName" placeholder="Your Name" required>
+                        <input type="tel" id="custPhone" placeholder="Your Phone Number/WhatsApp" required>
+                        <input type="number" id="custQty" placeholder="Quantity Needed" min="1" required>
+                        <textarea id="custMessage" placeholder="Specify details (e.g., live or slaughtered, delivery date, preferred sizing)..." required></textarea>
+                        <button type="submit" class="btn">Send via WhatsApp</button>
+                    </form>
                 </div>
 
             </div>
         </section>
     </div>
 
-    <section id="contact">
-        <h2 class="section-title">Place Your Order</h2>
-        <div class="contact-container">
-            
-            <div class="contact-info">
-                <h3>Get In Touch</h3>
-                <p>Ready to place an order or have questions? Contact us via the details below or drop us a message using the form.</p>
-                <br>
-                <p><strong>📍 Location:</strong> Mtunzini, Malungisa(kwaMkhwanazi) KZN</p>
-                <p><strong>📞 Phone / WhatsApp:</strong> +27 71 019 2992</p>
-                <p><strong>✉️ Email:</strong> orders@yourfarm.co.za</p>
-                <p><strong>⏰ Hours:</strong> Mon - Sat: 08:00 AM - 05:00 PM</p>
-            </div>
-
-            <div>
-                <form class="contact-form" id="orderForm">
-                    <input type="text" id="custName" placeholder="Your Name" required>
-                    <input type="tel" id="custPhone" placeholder="Your Phone Number/WhatsApp" required>
-                    <input type="number" id="custQty" placeholder="Quantity Needed" min="1" required>
-                    <textarea id="custMessage" placeholder="Specify details (e.g., live or slaughtered, delivery date, preferred sizing)..." required></textarea>
-                    <button type="submit" class="btn">Send via WhatsApp</button>
-                </form>
-            </div>
-
-        </div>
-    </section>
-
     <footer>
         <p>&copy; 2026 Chicken Flock Farms. All Rights Reserved.</p>
     </footer>
 
     <script>
+        // --- View Controller Logic (Tabs instead of Scrolling) ---
+        function switchView(viewId, element) {
+            // Hide all views
+            const views = document.querySelectorAll('.app-view');
+            views.forEach(view => view.classList.remove('active-view'));
+
+            // Remove active style from all navigation links
+            const pills = document.querySelectorAll('.menu-item');
+            pills.forEach(pill => pill.classList.remove('active-pill'));
+
+            // Show target view
+            document.getElementById('view-' + viewId).classList.add('active-view');
+
+            // Set current nav button to active look (if called from a nav button)
+            if (element && element.classList.contains('menu-item')) {
+                element.classList.add('active-pill');
+            } else {
+                // Default fallback to highlight Home if logo is clicked
+                document.querySelector('.nav-links li:first-child .menu-item').classList.add('active-pill');
+            }
+
+            // Scroll back to top smoothly so new view starts fresh
+            window.scrollTo({ top: 0 });
+        }
+
+        // Inside page shortcut to jump right to order screen
+        function goToOrder() {
+            const contactPill = document.querySelectorAll('.menu-item')[3];
+            switchView('contact', contactPill);
+        }
+
         // --- Light / Dark Mode Logic ---
         const themeToggleBtn = document.getElementById('themeToggle');
         
