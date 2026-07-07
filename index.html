@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fresh Broiler Chickens | Lungani's Broiler Chickens</title>
+    
+    <!-- Material Symbols for Slick, Modern Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0" />
+
     <style>
         /* --- Global Reset & Fonts --- */
         * {
@@ -27,6 +31,13 @@
             --input-border: #cccccc;
             --accent-color: #e65c00;
             --accent-hover: #cc5200;
+
+            /* Floating Pill Config */
+            --pill-bg: rgba(0, 0, 0, 0.06);
+            --pill-item-bg: rgba(0, 0, 0, 0.04);
+            --pill-active-bg: #444444;
+            --pill-active-text: #ffffff;
+            --pill-text: #333333;
         }
 
         /* --- Dark Mode Variables --- */
@@ -40,6 +51,13 @@
             --header-bg: #1f1f1f;
             --border-color: #444444;
             --input-border: #444444;
+
+            /* Floating Pill Config Dark */
+            --pill-bg: rgba(255, 255, 255, 0.07);
+            --pill-item-bg: rgba(255, 255, 255, 0.03);
+            --pill-active-bg: var(--accent-color);
+            --pill-active-text: #ffffff;
+            --pill-text: #e0e0e0;
         }
 
         body {
@@ -48,7 +66,7 @@
             line-height: 1.6;
         }
 
-        /* --- Navigation --- */
+        /* --- Navigation Bar --- */
         header {
             background-color: var(--header-bg);
             box-shadow: 0 2px 5px rgba(0,0,0,0.15);
@@ -64,11 +82,11 @@
             align-items: center;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 15px 20px;
+            padding: 12px 20px;
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             color: var(--accent-color);
             text-decoration: none;
@@ -77,62 +95,96 @@
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 25px;
+            gap: 20px;
         }
 
-        /* --- Square/Block Menu Configuration (Horizontal Always) --- */
+        /* --- Master Expanding Hover Menu Pod --- */
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 0; /* Keeps blocks joined flush together */
+            align-items: center;
+            gap: 10px;
+            background-color: var(--pill-bg);
+            padding: 6px 12px;
+            border-radius: 999px; /* Pill Container Wrap */
             border: 1px solid var(--border-color);
-            border-radius: 4px;
-            overflow: hidden;
+            backdrop-filter: blur(8px);
         }
 
         .nav-links li {
             display: flex;
         }
 
-        .nav-links a {
+        /* Base Individual Menu Pill Items */
+        .menu-item {
+            display: flex;
+            align-items: center;
             text-decoration: none;
-            color: var(--text-color);
+            color: var(--pill-text);
+            background-color: var(--pill-item-bg);
+            height: 44px;
+            width: 44px; /* Starts completely round showing just the icon */
+            border-radius: 999px;
+            gap: 0px;
+            padding: 0 10px;
+            overflow: hidden;
+            white-space: nowrap;
             font-weight: 500;
-            padding: 10px 20px; /* Desktop link padding */
-            background-color: var(--section-alt-bg);
-            border-right: 1px solid var(--border-color);
-            display: inline-block;
-            white-space: nowrap; /* Prevents text links from breaking into 2 lines */
-            transition: background-color 0.2s, color 0.2s;
+            font-size: 14px;
+            /* Precise bezier curves matching your screenshot code blueprints */
+            transition: width .45s cubic-bezier(.22, 1, .36, 1), background-color .3s ease, box-shadow .3s ease, color .3s;
         }
 
-        /* Removes the extra border line on the last block */
-        .nav-links li:last-child a {
-            border-right: none;
+        /* Center the icon within the closed bubble */
+        .menu-item .material-symbols-outlined {
+            font-size: 22px;
+            min-width: 24px;
+            text-align: center;
         }
 
-        /* Hover style for standard blocks */
-        .nav-links a:hover {
-            background-color: var(--border-color);
+        /* Hidden Labels Structure */
+        .menu-label {
+            opacity: 0;
+            max-width: 0;
+            transform: translateX(-8px);
+            transition: opacity .25s ease, max-width .45s ease, transform .35s ease;
+        }
+
+        /* --- Expanding Hover & Active Logic --- */
+        /* Home active by default highlights uniquely */
+        .nav-links li:first-child .menu-item {
+            background-color: var(--pill-active-bg);
+            color: var(--pill-active-text);
+            width: 110px; /* Home stays expanded initially to welcome visitors */
+            gap: 8px;
+        }
+        .nav-links li:first-child .menu-label {
+            opacity: 1;
+            max-width: 100px;
+            transform: translateX(0);
+        }
+
+        /* Expanding triggers on hover */
+        .menu-item:hover {
+            width: 160px; /* Expands open gracefully to hold text */
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(230, 92, 0, 0.15);
+            gap: 8px;
             color: var(--accent-color);
         }
 
-        /* --- Custom Distinct Block for HOME --- */
-        .nav-links li:first-child a {
-            background-color: #444444; /* Solid dark grey background */
-            color: #ffffff;            /* Crisp white text */
-            font-weight: bold;
+        /* Make sure home text doesn't clash on hover overlay */
+        .nav-links li:first-child .menu-item:hover {
+            color: var(--pill-active-text);
+            background-color: var(--pill-active-bg);
+            box-shadow: none;
         }
 
-        .nav-links li:first-child a:hover {
-            background-color: #333333;
-            color: #ffffff;
-        }
-
-        /* Changes Home block in Dark Mode so it remains clearly visible */
-        [data-theme="dark"] .nav-links li:first-child a {
-            background-color: var(--accent-color);
-            color: #ffffff;
+        /* Turn text tags on when parent width scales out */
+        .menu-item:hover .menu-label {
+            opacity: 1;
+            max-width: 100px;
+            transform: translateX(0);
         }
 
         /* --- Theme Toggle Button --- */
@@ -343,45 +395,30 @@
         @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
-                gap: 10px;
+                gap: 12px;
                 text-align: center;
-                padding: 10px 5px;
+                padding: 12px 5px;
             }
             .nav-right {
                 flex-direction: column;
-                gap: 10px;
+                gap: 12px;
                 width: 100%;
             }
-            /* Keeps blocks inline, horizontally scrollable if mobile screen is tiny */
             .nav-links {
                 flex-direction: row; 
                 width: auto;
                 max-width: 100%;
                 overflow-x: auto;
+                padding: 4px 8px;
                 -webkit-overflow-scrolling: touch;
             }
-            .nav-links li {
-                width: auto;
-            }
-            .nav-links a {
-                width: auto;
-                padding: 8px 10px; /* Slightly tighter text padding to fit perfectly across mobile devices */
-                font-size: 13px;    /* Optimizes text scale for small horizontal rows */
-                border-right: 1px solid var(--border-color);
-                border-bottom: none;
-            }
-            .nav-links li:last-child a {
-                border-right: none;
+            /* Make expanding responsive for thumbs on touch displays */
+            .menu-item:active, .menu-item:hover {
+                width: 145px;
             }
             .hero {
-                margin-top: 130px; /* Shortened to pull the hero image back up nicely */
+                margin-top: 135px;
                 height: 65vh;
-            }
-            .hero h1 {
-                font-size: 30px;
-            }
-            .hero p {
-                font-size: 16px;
             }
         }
     </style>
@@ -393,10 +430,30 @@
             <a href="#" class="logo">Lungani's Broiler Chickens</a>
             <div class="nav-right">
                 <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">Why Choose Us</a></li>
-                    <li><a href="#products">Our Chickens</a></li>
-                    <li><a href="#contact">Order Now</a></li>
+                    <li>
+                        <a href="#home" class="menu-item">
+                            <span class="material-symbols-outlined">home</span>
+                            <span class="menu-label">Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#about" class="menu-item">
+                            <span class="material-symbols-outlined">star</span>
+                            <span class="menu-label">Why Us</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#products" class="menu-item">
+                            <span class="material-symbols-outlined">shopping_basket</span>
+                            <span class="menu-label">Our Stock</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#contact" class="menu-item">
+                            <span class="material-symbols-outlined">chat</span>
+                            <span class="menu-label">Order Now</span>
+                        </a>
+                    </li>
                 </ul>
                 <button class="theme-toggle-btn" id="themeToggle">🌙 Dark</button>
             </div>
